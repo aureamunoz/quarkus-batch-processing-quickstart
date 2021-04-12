@@ -1,6 +1,14 @@
 # quarkus-batch-processing project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This project creates a simple Job that emit the numbers 1 through 10, processes these numbers in order to keep only the even numbers, and write the results.
+It is based in the [Java EE 7 Batch Processing example](https://github.com/eugenp/tutorials/tree/master/jee-7/src/main/java/com/baeldung/batch/understanding) example, it uses Quarkus with Quarkus Jberet extension. 
+
+
+### Relevant Articles:
+
+- [Java EE 7 Batch Processing](https://www.baeldung.com/java-ee-7-batch-processing)
+- [Quarkus JBeret Extension](https://github.com/quarkiverse/quarkus-jberet)
+
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
@@ -54,5 +62,3 @@ REST is easy peasy with this Hello World RESTEasy resource.
 [Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
 
 
-agroal, cdi, jberet, jberet-rest, mutiny, narayana-jta, rest-client, rest-client-jsonb, resteasy, resteasy-jsonb, smallrye-context-propagation
-agroal, cdi, jberet, jberet-rest, mutiny, narayana-jta, rest-client, rest-client-jsonb, resteasy, resteasy-jsonb, smallrye-context-propagation

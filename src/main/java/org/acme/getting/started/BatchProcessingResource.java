@@ -1,15 +1,16 @@
 package org.acme.getting.started;
 
+import io.quarkiverse.jberet.runtime.QuarkusJobOperator;
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import org.jberet.job.model.Job;
+import org.jberet.job.model.JobBuilder;
+import org.jberet.job.model.StepBuilder;
 
-import javax.batch.api.BatchProperty;
 import javax.batch.operations.JobOperator;
-import javax.batch.runtime.BatchRuntime;
 import javax.batch.runtime.JobExecution;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -19,12 +20,10 @@ import java.util.Properties;
 public class BatchProcessingResource {
 
     @Inject
-    @BatchProperty(name = "job.config.name")
-    String batchConfig;
+    QuarkusJobOperator quarkusJobOperator;
 
     @Inject
     JobOperator jobOperator;
-
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -38,6 +37,25 @@ public class BatchProcessingResource {
         Properties jobParameters = new Properties();
         long executionId = jobOperator.start("odds", jobParameters);
         JobExecution jobExecution = jobOperator.getJobExecution(executionId);
+
+        return Response.ok(new JobData(executionId, jobExecution.getBatchStatus().toString())).build();
+    }
+
+    @GET
+    @Path("/job/programmatic/execute")
+    public Response executeProgrammaticJob() {
+        Properties jobParameters = new Properties();
+
+        Job job = new JobBuilder("programmatic")
+                .step(new StepBuilder("programmaticStep")
+                        .reader("simpleItemReader")
+                        .processor("simpleItemProcessor")
+                        .writer("simpleItemWriter")
+                        .build())
+                .build();
+
+        long executionId = quarkusJobOperator.start(job, new Properties());
+        JobExecution jobExecution = quarkusJobOperator.getJobExecution(executionId);
 
         return Response.ok(new JobData(executionId, jobExecution.getBatchStatus().toString())).build();
     }

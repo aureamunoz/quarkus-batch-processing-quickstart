@@ -35,7 +35,6 @@ public class BatchProcessingResource {
     @GET
     @Path("/job/execute")
     public Response executeJob() {
-//        JobOperator jobOperator = BatchRuntime.getJobOperator();
         Properties jobParameters = new Properties();
         long executionId = jobOperator.start("odds", jobParameters);
         JobExecution jobExecution = jobOperator.getJobExecution(executionId);
